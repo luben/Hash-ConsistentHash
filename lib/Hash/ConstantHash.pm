@@ -172,7 +172,7 @@ You can also look for information at:
 
 =over 4
 
-=item * GIT repository with latest stuff
+=item * GIT repository with the latest stuff
 
 L<git://github.com/luben/Hash-ConstantHash.git>
 

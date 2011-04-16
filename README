@@ -22,6 +22,8 @@ perldoc command.
     perldoc Hash::ConstantHash
 
 You can also look for information at:
+    GIT repository with the latest stuff
+        git://github.com/luben/Hash-ConstantHash.git
 
     RT, CPAN's request tracker (report bugs here)
         http://rt.cpan.org/NoAuth/Bugs.html?Dist=Hash-ConstantHash
