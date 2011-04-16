@@ -1,9 +1,9 @@
 Hash-ConstantHash
 
-Hash::ConstantHash module is used for distributing keys over fixed number
-of buckets. Constant hash distribution means that if we add a bucket to  
-a hash with N buckets filled with M keys we have to move only M/(N+1) keys
-to new buckets.
+Hash::ConstantHash algorithm distributes keys over fixed number of buckets. 
+Constant hash distribution means that if we add a bucket to a hash with N 
+buckets filled with M keys we have to reassign only M/(N+1) keys to new 
+buckets.
 
 INSTALLATION
 

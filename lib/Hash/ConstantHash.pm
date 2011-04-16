@@ -7,7 +7,7 @@ use String::CRC32;
 
 =head1 NAME
 
-Hash::ConstantHash - The great new Hash::ConstantHash!
+Hash::ConstantHash - Constant hash algorithm
 
 =head1 VERSION
 
@@ -20,13 +20,6 @@ our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
-Hash::ConstantHash module is used for distributing keys over fixed number
-of buckets. Constant hash distribution means that if we add a bucket to
-a hash with N buckets filled with M keys we have to move only M/(N+1) keys 
-to new buckets.
-
-Here is an example how it is used:
-
     use Hash::ConstantHash;
 
     my $chash = Hash::ConstantHash->new(
@@ -34,9 +27,16 @@ Here is an example how it is used:
     );
     my $next  = $chash->lookup($key);
     my $server= $next->(); # get bucket
-    # do stuff
+    # do stuff with $server
     $server   = $next->(); # get another bucket
     ...
+
+=head1 DESCRIPTION
+
+Hash::ConstantHash algorithm distributes keys over fixed number of buckets. 
+Constant hash distribution means that if we add a bucket to a hash with N 
+buckets filled with M keys we have to reassign only M/(N+1) keys to new 
+buckets.
 
 =head1 METHODS
 
@@ -63,7 +63,7 @@ Examples:
 
 =item factor
 
-How well sequence of buckets will be randomized. Default 10.
+Randomization factor for the sequence. Default 10.
 
 =back
 
@@ -110,7 +110,7 @@ Example:
     my $next   = $chash->lookup('foo');
     my $bucket = $next->(); # B
     $bucket    = $next->(); # A 
-    $bucket    = $next->(); # C, exhausted 
+    $bucket    = $next->(); # C, hash is exhausted 
     $bucket    = $next->(); # A 
     ...
 
@@ -161,8 +161,6 @@ the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Hash-Const
 automatically be notified of progress on your bug as I make changes.
 
 
-
-
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
@@ -173,6 +171,10 @@ You can find documentation for this module with the perldoc command.
 You can also look for information at:
 
 =over 4
+
+=item * GIT repository with latest stuff
+
+L<git://github.com/luben/Hash-ConstantHash.git>
 
 =item * RT: CPAN's request tracker (report bugs here)
 
