@@ -22,8 +22,8 @@ our $VERSION = '0.01';
 
 Hash::ConstantHash module is used for distributing keys over fixed number
 of buckets. Constant hash distribution means that if we add a bucket to
-N buckets filled with M keys we have to move only M/(N+1) keys to new
-bucket.
+a hash with N buckets filled with M keys we have to move only M/(N+1) keys 
+to new buckets.
 
 Here is an example how it is used:
 
