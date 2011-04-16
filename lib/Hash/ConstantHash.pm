@@ -174,6 +174,7 @@ You can also look for information at:
 
 =item * GIT repository with the latest stuff
 
+L<https://github.com/luben/Hash-ConstantHash>
 L<git://github.com/luben/Hash-ConstantHash.git>
 
 =item * RT: CPAN's request tracker (report bugs here)
