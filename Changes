@@ -1,5 +1,8 @@
 Revision history for Hash-ConstantHash
+0.02    Sun Apr 17 02:51:34 EEST 2011
+    Fix typos in documentation
+    Add dependencies to the build system    
 
-0.01    20 Apr 2011
-        First version, released on an unsuspecting world.
+0.01    Sun Apr 17 00:51:34 EEST 2011
+    First version, released on an unsuspecting world.
 
