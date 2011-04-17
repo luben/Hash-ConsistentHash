@@ -1,6 +1,6 @@
-Hash-ConstantHash
+Hash-ConsistentHash
 
-Hash::ConstantHash algorithm distributes keys over fixed number of buckets. 
+Hash::ConsistentHash algorithm distributes keys over fixed number of buckets. 
 Constant hash distribution means that if we add a bucket to a hash with N 
 buckets filled with M keys we have to reassign only M/(N+1) keys to new 
 buckets.
@@ -19,25 +19,25 @@ SUPPORT AND DOCUMENTATION
 After installing, you can find documentation for this module with the
 perldoc command.
 
-    perldoc Hash::ConstantHash
+    perldoc Hash::ConsistentHash
 
 You can also look for information at:
 
     GIT repository with the latest stuff
-        https://github.com/luben/Hash-ConstantHash
-        git://github.com/luben/Hash-ConstantHash.git
+        https://github.com/luben/Hash-ConsistentHash
+        git://github.com/luben/Hash-ConsistentHash.git
 
     RT, CPAN's request tracker (report bugs here)
-        http://rt.cpan.org/NoAuth/Bugs.html?Dist=Hash-ConstantHash
+        http://rt.cpan.org/NoAuth/Bugs.html?Dist=Hash-ConsistentHash
 
     AnnoCPAN, Annotated CPAN documentation
-        http://annocpan.org/dist/Hash-ConstantHash
+        http://annocpan.org/dist/Hash-ConsistentHash
 
     CPAN Ratings
-        http://cpanratings.perl.org/d/Hash-ConstantHash
+        http://cpanratings.perl.org/d/Hash-ConsistentHash
 
     Search CPAN
-        http://search.cpan.org/dist/Hash-ConstantHash/
+        http://search.cpan.org/dist/Hash-ConsistentHash/
 
 
 LICENSE AND COPYRIGHT
