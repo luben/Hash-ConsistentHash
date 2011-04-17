@@ -39,6 +39,11 @@ Constant hash distribution means that if we add a bucket to a hash with N
 buckets filled with M keys we have to reassign only M/(N+1) keys to new 
 buckets.
 
+What puts apart this module from all similar modules available is that you
+could ask for non-repeatable series of buckets. Using this property you 
+could implement not only consistent distribution but also redundancy - one
+key to be directed to more than one bucket.
+
 =head1 METHODS
 
 =head2 new
@@ -159,6 +164,10 @@ sub lookup {
         }
     }
 }
+
+=head1 SEE ALSO
+
+L<Set::ConsistentHash> L<Algorithm::ConsistentHash::Ketama>
 
 =head1 AUTHOR
 
