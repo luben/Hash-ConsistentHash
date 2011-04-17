@@ -4,10 +4,10 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-    NAME                => 'Hash::ConstantHash',
+    NAME                => 'Hash::ConsistentHash',
     AUTHOR              => q{Luben Karavelov <<karavelov@spnet.net>>},
-    VERSION_FROM        => 'lib/Hash/ConstantHash.pm',
-    ABSTRACT_FROM       => 'lib/Hash/ConstantHash.pm',
+    VERSION_FROM        => 'lib/Hash/ConsistentHash.pm',
+    ABSTRACT_FROM       => 'lib/Hash/ConsistentHash.pm',
     ($ExtUtils::MakeMaker::VERSION >= 6.3002
       ? ('LICENSE'=> 'perl')
       : ()),
@@ -17,5 +17,5 @@ WriteMakefile(
         'String::CRC32' => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
-    clean               => { FILES => 'Hash-ConstantHash-*' },
+    clean               => { FILES => 'Hash-ConsistentHash-*' },
 );

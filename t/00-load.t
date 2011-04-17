@@ -3,7 +3,7 @@
 use Test::More tests => 1;
 
 BEGIN {
-    use_ok( 'Hash::ConstantHash' ) || print "Bail out!\n";
+    use_ok( 'Hash::ConsistentHash' ) || print "Bail out!\n";
 }
 
-diag( "Testing Hash::ConstantHash $Hash::ConstantHash::VERSION, Perl $], $^X" );
+diag( "Testing Hash::ConsistentHash $Hash::ConsistentHash::VERSION, Perl $], $^X" );

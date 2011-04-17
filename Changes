@@ -1,4 +1,8 @@
-Revision history for Hash-ConstantHash
+Revision history for Hash-ConsistentHash
+0.03   Sun Apr 17 19:50:07 EEST 2011
+    Rename Hash-ConstantHash to Hash-ConsistentHash 
+    Use user supplied hash function
+
 0.02    Sun Apr 17 02:51:34 EEST 2011
     Fix typos in documentation
     Add dependencies to the build system    
