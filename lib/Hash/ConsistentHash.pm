@@ -56,10 +56,14 @@ weight.
 Examples:
 
     # All buckets have same weight so they will hold equal amount of keys
-    my $chash = Hash::ConsistentHash->new( buckets => [qw(A B C)] );
+    my $chash = Hash::ConsistentHash->new( 
+        buckets => [qw(A B C)], 
+        hash_func=>\&crc32 );
 
     # Bucket "B" will hold twice the amount of keys of bucket A or C
-    my $chash = Cash::ConsistentHash->new( buckets => {A=>1, B=>2, C=>1} );
+    my $chash = Cash::ConsistentHash->new( 
+        buckets => {A=>1, B=>2, C=>1},
+        hash_func=>\&crc32 );
 
 
 =item factor
