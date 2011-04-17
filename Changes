@@ -1,4 +1,7 @@
 Revision history for Hash-ConsistentHash
+0.04   Sun Apr 17 22:23:35 EEST 2011
+    Fix documentation and examples
+
 0.03   Sun Apr 17 19:50:07 EEST 2011
     Rename Hash-ConstantHash to Hash-ConsistentHash 
     Use user supplied hash function
