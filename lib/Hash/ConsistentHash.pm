@@ -130,7 +130,7 @@ Returned buckets will not repeat until all buckets are exhausted.
 
 sub lookup {
     my ($self,$key) = @_;
-    my $idx = $self->{hash_func}->($key);
+    my $idx = $self->{hash_func}->($key) & 0xFFFFFFFF;
     my $ring= $self->{ring};
     my %seen;
     my $returned = 0;
