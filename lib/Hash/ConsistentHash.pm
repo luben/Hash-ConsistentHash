@@ -26,7 +26,7 @@ our $VERSION = '0.03';
         buckets   => [qw(10.0.0.1 10.0.0.2 10.0.0.3 10.0.0.4)],
         hash_func => \&crc32
     );
-    my $next  = $chash->lookup($key);
+    my $next  = $chash->lookup('foo');
     my $server= $next->(); # get bucket
     # do stuff with $server
     $server   = $next->(); # get another bucket
@@ -82,8 +82,8 @@ sub new {
     my %params = @_;
     my $max    = $params{factor} // 10;
     die "You showld specify hash_func coderef" 
-        unless ref($params{hash_func} eq 'CODE');
-    $self->{hash_funct} = $params{hash_func};
+        unless ref($params{hash_func}) eq 'CODE';
+    $self->{hash_func} = $params{hash_func};
     my (@dest,$weight);
     if (ref $params{buckets} eq 'ARRAY'){
         @dest  = @{$params{buckets}};
