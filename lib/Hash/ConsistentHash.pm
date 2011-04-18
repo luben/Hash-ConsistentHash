@@ -173,6 +173,7 @@ sub lookup {
 }
 
 =head2 get_bucket
+
 Lookup a key in the hash. Accept one param - the key. Returns a bucket. 
 
 Example: 
@@ -193,7 +194,7 @@ sub get_bucket {
 
 =head1 SEE ALSO
 
-L<Set::ConsistentHash> L<Algorithm::ConsistentHash::Ketama>
+L<Set::ConsistentHash>, L<Algorithm::ConsistentHash::Ketama>
 
 =head1 AUTHOR
 
@@ -220,6 +221,7 @@ You can also look for information at:
 =item * GIT repository with the latest stuff
 
 L<https://github.com/luben/Hash-ConsistentHash>
+
 L<git://github.com/luben/Hash-ConsistentHash.git>
 
 =item * RT: CPAN's request tracker (report bugs here)
