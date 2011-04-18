@@ -10,11 +10,11 @@ Hash::ConsistentHash - Constant hash algorithm
 
 =head1 VERSION
 
-Version 0.01
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 =head1 SYNOPSIS
@@ -26,8 +26,12 @@ our $VERSION = '0.04';
         buckets   => [qw(10.0.0.1 10.0.0.2 10.0.0.3 10.0.0.4)],
         hash_func => \&crc32
     );
-    my $next  = $chash->lookup('foo');
-    my $server= $next->(); # get bucket
+    # get just one bucket
+    my $server = $chash->get_bucket('foo');
+
+    # or get a serie of non-repeating buckets through iterator
+    my $next  = $chash->lookup('bar');
+    $server   = $next->(); # get bucket
     # do stuff with $server
     $server   = $next->(); # get another bucket
     ...
@@ -52,6 +56,10 @@ Creates ConsistentHash object. It accept following params:
 
 =over
 
+=item hash_func
+
+Hash function to be used on keys and buckets
+
 =item buckets
 
 Arrayref or Hashref. If buckets are given as arrayref they will have
@@ -71,10 +79,6 @@ Examples:
         hash_func=>\&crc32 );
 
 
-=item factor
-
-Randomization factor for the sequence. Default 10.
-
 =back
 
 =cut
@@ -85,10 +89,10 @@ sub new {
     $self   = bless {bukets=>0}, $class;
 
     my %params = @_;
-    my $max    = $params{factor} // 10;
     die "You showld specify hash_func coderef" 
         unless ref($params{hash_func}) eq 'CODE';
     $self->{hash_func} = $params{hash_func};
+    $self->{mask} = $params{mask} // 0xFF;
     my (@dest,$weight);
     if (ref $params{buckets} eq 'ARRAY'){
         @dest  = @{$params{buckets}};
@@ -99,15 +103,27 @@ sub new {
     }
     return unless @dest;
     $self->{buckets} = scalar(@dest);
-    $self->{ring} = {
-        map{
-            srand($self->{hash_func}->(my $dest = $_));
-            my %result;
-            $result{int(rand(0xFFFFFFFF))}=$dest
-                for ( 1..$max * $weight->{$dest} );
-            %result
-        } @dest };
-    $self->{sorted} = [ sort {$a <=> $b } keys ( %{$self->{ring}} ) ];
+    my $total_weight = 0;
+    for my $bucket (@dest){
+        $total_weight += $weight->{$bucket};
+    }
+    my $buckets_per_waight = int($self->{mask}/$total_weight);
+    while( $buckets_per_waight < 5 ){
+        $self->{mask} = (($self->{mask} << 2) | 3);
+    }
+    for my $bucket (@dest){
+        srand($self->{hash_func}->($bucket));
+        my $bucks = $buckets_per_waight * $weight->{$bucket};
+        while ($bucks > 0) {
+            my $n = int(rand($self->{mask}));
+            next if defined $self->{ring}->[$n];
+            $self->{ring}->[$n] = $bucket;
+            $bucks--;
+        }
+    }
+    for my $n (0..$self->{mask}){
+        $self->{ring}->[$n] //= shift @dest;
+    }
     return $self;
 }
 
@@ -118,6 +134,7 @@ Lookup a key in the hash. Accept one param - the key. Returns an iterator
 over the hash buckets.
 
 Example: 
+
     my $chash = Hash::ConsistentHash->new( 
         buckets => [qw(A B C)], 
         hash_func=>\&crc32 );
@@ -135,34 +152,43 @@ Returned buckets will not repeat until all buckets are exhausted.
 
 sub lookup {
     my ($self,$key) = @_;
-    my $idx = $self->{hash_func}->($key) & 0xFFFFFFFF;
+    my $idx = $self->{hash_func}->($key) & $self->{mask};
     my $ring= $self->{ring};
     my %seen;
     my $returned = 0;
     return sub {
-        my $first;
         # start from the beggining if we have already returned all buckets
         if ($returned >= $self->{buckets}){
             $returned = 0;
             %seen = ();
         }
-        while (1){
-            for my $n ( @{ $self->{sorted} }){
-                $first //= $n;
-                if(($n > $idx) and (not $seen{$ring->{$n}})){
-                    $seen{$ring->{$n}} = 1;
-                    $returned ++;
-                    return $ring->{$idx = $n};
-                }
-            }
-            $idx = $first;
-            if (not $seen{$ring->{$idx}}){
-                $seen{$ring->{$idx}} = 1;
-                $returned ++;
-                return $ring->{$idx};
-            }
+        while($seen{$ring->[$idx]}){
+            $idx++;
+            $idx = 0 if $idx > $self->{mask};
         }
+        $seen{$ring->[$idx]}=1;
+        $returned ++;
+        return $ring->[$idx];
     }
+}
+
+=head2 get_bucket
+Lookup a key in the hash. Accept one param - the key. Returns a bucket. 
+
+Example: 
+
+    my $chash = Hash::ConsistentHash->new( 
+        buckets => [qw(A B C)], 
+        hash_func=>\&crc32 );
+
+    my $bucket  = $chash->get_bucket('foo');
+
+=cut
+
+sub get_bucket {
+    my ($self,$key) = @_;
+    my $idx = $self->{hash_func}->($key) & $self->{mask};
+    return $self->{ring}->[$idx];
 }
 
 =head1 SEE ALSO
