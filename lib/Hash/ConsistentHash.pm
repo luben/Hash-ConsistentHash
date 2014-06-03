@@ -14,7 +14,7 @@ Version 0.05
 
 =cut
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 
 =head1 SYNOPSIS
@@ -38,13 +38,13 @@ our $VERSION = '0.05';
 
 =head1 DESCRIPTION
 
-Hash::ConsistentHash algorithm distributes keys over fixed number of buckets. 
-Constant hash distribution means that if we add a bucket to a hash with N 
-buckets filled with M keys we have to reassign only M/(N+1) keys to new 
+Hash::ConsistentHash algorithm distributes keys over fixed number of buckets.
+Constant hash distribution means that if we add a bucket to a hash with N
+buckets filled with M keys we have to reassign only M/(N+1) keys to new
 buckets.
 
 What puts apart this module from all similar modules available is that you
-could ask for non-repeatable series of buckets. Using this property you 
+could ask for non-repeatable series of buckets. Using this property you
 could implement not only consistent distribution but also redundancy - one
 key to be directed to more than one bucket.
 
@@ -64,17 +64,17 @@ Hash function to be used on keys and buckets
 
 Arrayref or Hashref. If buckets are given as arrayref they will have
 same weight. If given as hashref, every bucket could have differend
-weight. 
+weight.
 
 Examples:
 
     # All buckets have same weight so they will hold equal amount of keys
-    my $chash = Hash::ConsistentHash->new( 
-        buckets => [qw(A B C)], 
+    my $chash = Hash::ConsistentHash->new(
+        buckets => [qw(A B C)],
         hash_func=>\&crc32 );
 
     # Bucket "B" will hold twice the amount of keys of bucket A or C
-    my $chash = Cash::ConsistentHash->new( 
+    my $chash = Cash::ConsistentHash->new(
         buckets => {A=>1, B=>2, C=>1},
         hash_func=>\&crc32 );
 
@@ -89,10 +89,12 @@ sub new {
     $self   = bless {bukets=>0}, $class;
 
     my %params = @_;
-    die "You showld specify hash_func coderef" 
+    die "You showld specify hash_func coderef"
         unless ref($params{hash_func}) eq 'CODE';
+
     $self->{hash_func} = $params{hash_func};
     $self->{mask} = $params{mask} // 0xFF;
+
     my (@dest,$weight);
     if (ref $params{buckets} eq 'ARRAY'){
         @dest  = @{$params{buckets}};
@@ -109,7 +111,8 @@ sub new {
     }
     my $buckets_per_waight = int($self->{mask}/$total_weight);
     while( $buckets_per_waight < 5 ){
-        $self->{mask} = (($self->{mask} << 2) | 3);
+        $self->{mask} |= $self->{mask} << 1;
+        $buckets_per_waight = int($self->{mask}/$total_weight);
     }
     for my $bucket (@dest){
         srand($self->{hash_func}->($bucket));
@@ -130,20 +133,20 @@ sub new {
 
 =head2 lookup
 
-Lookup a key in the hash. Accept one param - the key. Returns an iterator 
+Lookup a key in the hash. Accept one param - the key. Returns an iterator
 over the hash buckets.
 
-Example: 
+Example:
 
-    my $chash = Hash::ConsistentHash->new( 
-        buckets => [qw(A B C)], 
+    my $chash = Hash::ConsistentHash->new(
+        buckets => [qw(A B C)],
         hash_func=>\&crc32 );
 
     my $next   = $chash->lookup('foo');
     my $bucket = $next->(); # B
-    $bucket    = $next->(); # A 
-    $bucket    = $next->(); # C, hash is exhausted 
-    $bucket    = $next->(); # A 
+    $bucket    = $next->(); # A
+    $bucket    = $next->(); # C, hash is exhausted
+    $bucket    = $next->(); # A
     ...
 
 Returned buckets will not repeat until all buckets are exhausted.
@@ -174,12 +177,12 @@ sub lookup {
 
 =head2 get_bucket
 
-Lookup a key in the hash. Accept one param - the key. Returns a bucket. 
+Lookup a key in the hash. Accept one param - the key. Returns a bucket.
 
-Example: 
+Example:
 
-    my $chash = Hash::ConsistentHash->new( 
-        buckets => [qw(A B C)], 
+    my $chash = Hash::ConsistentHash->new(
+        buckets => [qw(A B C)],
         hash_func=>\&crc32 );
 
     my $bucket  = $chash->get_bucket('foo');
