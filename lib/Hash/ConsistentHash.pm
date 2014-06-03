@@ -247,7 +247,7 @@ L<http://search.cpan.org/dist/Hash-ConsistentHash/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2011 Luben Karavelov.
+Copyright 2011-2014 Luben Karavelov.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published
