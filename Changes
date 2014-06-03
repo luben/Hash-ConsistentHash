@@ -1,5 +1,5 @@
 Revision history for Hash-ConsistentHash
-0.06   Tue Jun  3 01:18:16 IST 2014
+0.07   Tue Jun  3 01:18:16 IST 2014
   * Fix bug in the constructor
   * cleanup trailing whitespaces
 0.05   Mon Apr 18 03:28:12 EEST 2011
