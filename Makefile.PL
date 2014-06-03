@@ -5,7 +5,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
     NAME                => 'Hash::ConsistentHash',
-    AUTHOR              => q{Luben Karavelov <<karavelov@spnet.net>>},
+    AUTHOR              => q{Luben Karavelov <<karavelov@gmail.com>>},
     VERSION_FROM        => 'lib/Hash/ConsistentHash.pm',
     ABSTRACT_FROM       => 'lib/Hash/ConsistentHash.pm',
     ($ExtUtils::MakeMaker::VERSION >= 6.3002
