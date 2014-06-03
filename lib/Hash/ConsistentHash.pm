@@ -10,7 +10,7 @@ Hash::ConsistentHash - Constant hash algorithm
 
 =head1 VERSION
 
-Version 0.05
+Version 0.07
 
 =cut
 
